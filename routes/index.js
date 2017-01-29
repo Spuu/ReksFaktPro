@@ -8,7 +8,7 @@ var path = require('path');
 router.use('/api', require('./api_v1'));
 
 /**
- * Rest are left for Angular2
+ * Rest are left for placeholder
  */
 router.all('/*', function(req, res) {
     res.sendFile(path.join(__dirname, '../index.html'));
