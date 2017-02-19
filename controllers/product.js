@@ -10,109 +10,11 @@ class ProductController extends BasicController {
     constructor() {
         super(dataModel, new ProductListParamManager(), new ProductQueryBuilder());
     }
-}
 
-module.exports = {
+    ean_name_search(req, res) {
+        let limit = req.params.limit || 100;
 
-    /**
-     * @api {get} /product Request Product list
-     * @apiName GetProducts
-     * @apiGroup Product
-     * @apiVersion 2.0.0
-     *
-     * @apiSuccess {Object[]} products List of Products
-     */
-    list: function (req, res) {
-
-        let offset = req.query.offset || 0;
-        let limit = req.query.limit || 100;
-        let query = req.query.query;
-        let sort = req.query.sort || 'name';
-        let order = req.query.order || 1;
-
-        let queryMongo = {};
-
-        if (query) {
-            queryMongo = {
-                $or: [
-                    {ean: new RegExp(query, 'i')},
-                    {name: new RegExp(query, 'i')}
-                ]
-            }
-        }
-
-        let sortObj = { [sort] : +order };
-
-        let promises = [
-            dataModel.count(queryMongo).exec(), // total rows
-            dataModel.find(queryMongo)          // paged docs
-                .sort(sortObj)
-                .skip(+offset)
-                .limit(+limit)
-                .exec()
-        ];
-
-        Promise.all(promises)
-            .then((data) => {
-                return res.json({
-                    total: data[0],
-                    docs: data[1]
-                });
-            })
-            .catch((err) => {
-                return Utils.err500(res)
-            });
-    },
-
-    show: function(req, res) {
-        var id = req.params.id;
-        dataModel.findOne({_id: id}, function(err, data){
-            if(err) return Utils.err500(res);
-
-            if(!data) return Utils.err404(res);
-            return res.json(data);
-        });
-    },
-
-    create: function(req, res) {
-        var model = new dataModel();
-        Utils.setObject(model, req.body);
-
-        model.save(function(err, data){
-            if(err) return Utils.error(res, 500, err.message);
-            return res.json(data);
-        });
-    },
-
-    update: function(req, res) {
-        var id = req.params.id;
-        dataModel.findOne({_id: id}, function(err, data){
-            if(err) return Utils.error(res, 500, err.message);
-            if(!data) return Utils.err400(res);
-
-            Utils.setObject(data, req.body);
-            data.status = dataModel.statusVal().updated;
-
-            data.save(function(err, data){
-                if(err) return Utils.err500(res);
-                if(!data) return Utils.err404(res);
-                return res.json(data);
-            });
-        });
-    },
-
-    remove: function(req, res) {
-        var id = req.params.id;
-        dataModel.findByIdAndRemove(id, function(err, data){
-            if(err) return Utils.err500(res);
-            return res.json(data);
-        });
-    },
-
-    ean_name_search: function (req, res) {
-        var limit = req.params.limit || 100;
-
-        dataModel.find({
+        this.dataModel.find({
             $or: [{ean: new RegExp(req.params.query, 'i')},
                 {name: new RegExp(req.params.query, 'i')}]
         }, function (err, obj) {
@@ -121,104 +23,104 @@ module.exports = {
 
             res.json(obj);
         }).limit(+limit);
-    },
+    }
 
-    show_children: function(req, res) {
-        var id = req.params.id;
-        dataModel.findOne({_id: id})
+    show_children(req, res) {
+        let id = req.params.id;
+        this.dataModel.findOne({_id: id})
             .populate('_children')
-            .exec(function(err, data) {
-                if(err) return Utils.err500(res);
-                if(!data) return Utils.err404(res);
+            .exec(function (err, data) {
+                if (err) return Utils.err500(res);
+                if (!data) return Utils.err404(res);
                 return res.json(data);
             });
-    },
-
-    /*
-        Creates product (marking it as barcode)
-        Sets params for add_child route
-     */
-    create_barcode : function(req, res, next) {
-        req.body.is_barcode = true;
-        req.params.return_child = true;
-
-        /* ugly creational copy-paste */
-        var model = new dataModel();
-        Utils.setObject(model, req.body);
-
-        model.save(function(err, data){
-            if(err) return Utils.error(res, 500, err.message);
-
-            req.params.id_c = data._id;
-            next();
-        });
-    },
+    }
 
     /*
      Creates product (marking it as barcode)
      Sets params for add_child route
      */
-    find_id_father_from_ean : function(req, res, next) {
+    create_barcode(req, res, next) {
+        req.body.is_barcode = true;
+        req.params.return_child = true;
 
-        if(!req.query.ean)
+        /* ugly creational copy-paste */
+        let model = new this.dataModel();
+        Utils.setObject(model, req.body);
+
+        model.save(function (err, data) {
+            if (err) return Utils.error(res, 500, err.message);
+
+            req.params.id_c = data._id;
+            next();
+        });
+    }
+
+    /*
+     Creates product (marking it as barcode)
+     Sets params for add_child route
+     */
+    find_id_father_from_ean(req, res, next) {
+
+        if (!req.query.ean)
             return Utils.error(res, 500, "No EAN provided.");
 
-        dataModel.findOne({ean: req.query.ean}, function(err, data) {
-            if(err)
+        this.dataModel.findOne({ean: req.query.ean}, function (err, data) {
+            if (err)
                 return Utils.error(res, 500, err.message);
 
-            if(!data)
+            if (!data)
                 return Utils.error(res, 500, "No EAN found.");
 
             req.params.id_f = data._id;
             next();
         })
-    },
+    }
 
-    add_child: function (req, res) {
-        var rh = new RelationHelper(req.params.id_f, req.params.id_c);
+    add_child(req, res) {
+        let rh = new RelationHelper(req.params.id_f, req.params.id_c);
         rh.addChildObs.subscribe(
             function (data) {
                 data.child._father = data.father;
                 data.father._children.push(data.child);
-                
+
                 data.child.save(function (err) {
-                    if(err)
+                    if (err)
                         return Utils.error(res, 500, err.message);
 
-                    if(req.params.return_child)
+                    if (req.params.return_child)
                         return res.json(data.child);
 
                 });
 
                 data.father.save(function (err) {
-                    if(err)
+                    if (err)
                         return Utils.error(res, 500, err.message);
 
-                    if(!req.params.return_child)
+                    if (!req.params.return_child)
                         return res.json(data.father);
                 });
             },
             function (err) {
                 return Utils.error(res, 500, err.message);
             },
-            function() {
+            function () {
                 console.log("end of world");
             }
         );
-    },
+    }
 
-    remove_child: function (req, res) {
-        var rh = new RelationHelper(req.params.id_f, req.params.id_c);
+    remove_child(req, res) {
+        let rh = new RelationHelper(req.params.id_f, req.params.id_c);
         rh.checkIfBothExist.subscribe(
             function (data) {
 
-                if(!data.father || !data.child)
+                if (!data.father || !data.child)
                     return Utils.error(res, 500, 'No child or father.');
 
-                var child_index = data.father._children.indexOf(data.child._id);
+                let child_index = data.father._children.indexOf(data.child._id);
 
-                if(data.child._father === undefined || child_index === -1) {
+                if (data.child._father === undefined || child_index === -1) {
                     return Utils.error(res, 500, 'No relation between child and father.');
                 }
 
@@ -240,4 +142,6 @@ module.exports = {
             }
         );
     }
-};
+}
+
+module.exports = new ProductController();

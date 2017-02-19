@@ -11,7 +11,7 @@ class ListParamManager {
     }
 
     get sortCriteria() {
-        return { [this.sortField()] : this.sortOrder() };
+        return { [this.sortField] : this.sortOrder };
     }
 
     get offset() {

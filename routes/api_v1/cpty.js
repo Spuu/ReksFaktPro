@@ -1,8 +1,8 @@
 var express = require('express');
-var _ = require('underscore');
 var router = express.Router();
 var controller = require('../../controllers/cpty');
 
+var _ = require('underscore');
 _.bindAll(controller, 'list', 'show', 'create', 'update', 'remove');
 
 /*

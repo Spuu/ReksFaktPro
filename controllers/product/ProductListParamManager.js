@@ -5,3 +5,5 @@ class ProductListParamManager extends ListParamManager {
         return super.process(query, 'name');
     }
 }
+
+module.exports = ProductListParamManager;

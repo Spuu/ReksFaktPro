@@ -21,7 +21,7 @@ class BasicController {
 
             this.dataModel
                 .find(query)          // paged docs
-                .sort(this.queryBuilder.sortCriteria)
+                .sort(this.paramManager.sortCriteria)
                 .skip(this.paramManager.offset)
                 .limit(this.paramManager.limit)
                 .exec()

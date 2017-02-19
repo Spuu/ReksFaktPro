@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var controller = require('../../controllers/product');
 
+var _ = require('underscore');
+_.bindAll(controller, 'list', 'show', 'create', 'update', 'remove',
+    'ean_name_search', 'show_children', 'add_child', 'remove_child', 'create_barcode', 'find_id_father_from_ean');
+
 /*
  * GET
  */

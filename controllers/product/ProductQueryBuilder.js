@@ -1,5 +1,6 @@
 let EmptyQueryBuilder = require('../generic/EmptyQueryBuilder');
 
+module.exports =
 class ProductQueryBuilder extends EmptyQueryBuilder {
     build(searchQuery) {
         if (searchQuery) {
@@ -13,4 +14,4 @@ class ProductQueryBuilder extends EmptyQueryBuilder {
 
         return super.build(searchQuery);
     }
-}
+};
