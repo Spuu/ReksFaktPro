@@ -3,11 +3,46 @@ var dataModel = require('../models/store');
 
 module.exports = {
 
-    list: function(req, res) {
-        dataModel.find(function(err, data){
-            if(err) return Utils.err500(res);
-            return res.json(data);
-        });
+    list: function (req, res) {
+
+        let offset = req.query.offset || 0;
+        let limit = req.query.limit || 100;
+        let query = req.query.query;
+        let sort = req.query.sort || 'name';
+        let order = req.query.order || 1;
+
+        let queryMongo = {};
+
+        if (query) {
+            queryMongo = {
+                $or: [
+                    {ean: new RegExp(query, 'i')},
+                    {name: new RegExp(query, 'i')}
+                ]
+            }
+        }
+
+        let sortObj = { [sort] : +order };
+
+        let promises = [
+            dataModel.count(queryMongo).exec(), // total rows
+            dataModel.find(queryMongo)          // paged docs
+                .sort(sortObj)
+                .skip(+offset)
+                .limit(+limit)
+                .exec()
+        ];
+
+        Promise.all(promises)
+            .then((data) => {
+                return res.json({
+                    total: data[0],
+                    docs: data[1]
+                });
+            })
+            .catch((err) => {
+                return Utils.err500(res)
+            });
     },
 
     show: function(req, res) {

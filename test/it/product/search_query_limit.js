@@ -4,7 +4,7 @@ var config = require('../../../config');
 module.exports = function (done) {
 
     request(config.api_url)
-        .get('/product/search/123/1')
+        .get('/product/query/123/1')
         .expect(200)
         .end(function (err, res) {
             if (err) {

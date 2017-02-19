@@ -12,7 +12,7 @@ router.get('/', controller.list);
  */
 router.get('/:id', controller.show);
 
-router.get('/search/:query/:limit?', controller.ean_name_search);
+router.get('/query/:query/:limit?', controller.ean_name_search);
 
 router.get('/:id/show_children', controller.show_children);
 

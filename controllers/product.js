@@ -1,6 +1,16 @@
-var Utils = require('../utils/GenericUtils');
-var RelationHelper = require('./product/RelationHelper');
-var dataModel = require('../models/product');
+let Utils = require('../utils/GenericUtils');
+let RelationHelper = require('./product/RelationHelper');
+let dataModel = require('../models/product');
+
+let BasicController = require('./generic/BasicController.js');
+let ProductListParamManager = require('./product/ProductListParamManager');
+let ProductQueryBuilder = require('./product/ProductQueryBuilder');
+
+class ProductController extends BasicController {
+    constructor() {
+        super(dataModel, new ProductListParamManager(), new ProductQueryBuilder());
+    }
+}
 
 module.exports = {
 
@@ -13,10 +23,44 @@ module.exports = {
      * @apiSuccess {Object[]} products List of Products
      */
     list: function (req, res) {
-        dataModel.find().sort('name').exec(
-            function (err, data) {
-                if (err) return Utils.err500(res);
-                return res.json(data);
+
+        let offset = req.query.offset || 0;
+        let limit = req.query.limit || 100;
+        let query = req.query.query;
+        let sort = req.query.sort || 'name';
+        let order = req.query.order || 1;
+
+        let queryMongo = {};
+
+        if (query) {
+            queryMongo = {
+                $or: [
+                    {ean: new RegExp(query, 'i')},
+                    {name: new RegExp(query, 'i')}
+                ]
+            }
+        }
+
+        let sortObj = { [sort] : +order };
+
+        let promises = [
+            dataModel.count(queryMongo).exec(), // total rows
+            dataModel.find(queryMongo)          // paged docs
+                .sort(sortObj)
+                .skip(+offset)
+                .limit(+limit)
+                .exec()
+        ];
+
+        Promise.all(promises)
+            .then((data) => {
+                return res.json({
+                    total: data[0],
+                    docs: data[1]
+                });
+            })
+            .catch((err) => {
+                return Utils.err500(res)
             });
     },
 

@@ -1,6 +1,5 @@
 var Utils = function(){
 
-
     var error = function (res, status, message) {
         console.log('Status: ' + status + ', message: ', message);
         return res.status(status).json({ error : message });
@@ -14,13 +13,11 @@ var Utils = function(){
         return error(res, 404, 'No such data');
     };
 
-    var setObject = function(target, obj) {
-
-        var _this = target;
-        Object.keys(obj).forEach(function(key) {
-            _this[key] = obj[key];
-        });
-    };
+    var setObject = (target, source) =>
+        Object.keys(source)
+            .forEach(
+                (key) => target[key] = source[key]
+            );
 
     var objectValues = obj => Object.keys(obj).map(key => obj[key]);
 

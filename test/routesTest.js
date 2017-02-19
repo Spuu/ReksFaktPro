@@ -38,8 +38,8 @@ describe('Routes (CRUD)', function () {
     });
 
     describe('Searching products', function () {
-            it('GET /api/product/search/123', require('./it/product/search_query')),
-            it('GET /api/product/search/123/1', require('./it/product/search_query_limit'));
+            it('GET /api/product/query/123', require('./it/product/search_query')),
+            it('GET /api/product/query/123/1', require('./it/product/search_query_limit'));
     });
 
     describe('Products relation', function () {

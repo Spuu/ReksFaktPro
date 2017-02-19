@@ -12,8 +12,8 @@ router.get('/', controller.list);
  */
 router.get('/:id', controller.show);
 
-// TODO: cos nie tak z sub-posittion search
-//router.get('/search/:invoice_id', controller.search);
+// TODO: cos nie tak z sub-posittion query
+//router.get('/query/:invoice_id', controller.query);
 
 /*
  * POST
