@@ -1,49 +1,50 @@
 var express = require('express');
 var router = express.Router();
-var controller = require('../../controllers/product');
-
-var _ = require('underscore');
-_.bindAll(controller, 'list', 'show', 'create', 'update', 'remove',
-    'ean_name_search', 'show_children', 'add_child', 'remove_child', 'create_barcode', 'find_id_father_from_ean');
+var ctrl = require('../../controllers/product');
 
 /*
  * GET
  */
-router.get('/', controller.list);
+router.get('/', ctrl.list.bind(ctrl));
 
 /*
  * GET
  */
-router.get('/:id', controller.show);
+router.get('/:id', ctrl.show.bind(ctrl));
 
-router.get('/query/:query/:limit?', controller.ean_name_search);
+router.get('/query/:query/:limit?', ctrl.ean_name_search.bind(ctrl));
 
-router.get('/:id/show_children', controller.show_children);
+router.get('/:id/show_children', ctrl.show_children.bind(ctrl));
 
-router.get('/:id_f/add_child/:id_c', controller.add_child);
+router.get('/:id_f/add_child/:id_c', ctrl.add_child.bind(ctrl));
 
-router.get('/:id_f/remove_child/:id_c', controller.remove_child);
+router.get('/:id_f/remove_child/:id_c', ctrl.remove_child.bind(ctrl));
 
 /*
  * POST
  */
-router.post('/', controller.create);
+router.post('/', ctrl.create.bind(ctrl));
 
 /*
     Creates product as barcode and joins it with father
  */
-router.post('/:id_f/barcodes/add/', controller.create_barcode, controller.add_child);
+router.post('/:id_f/barcodes/add/',
+    ctrl.create_barcode.bind(ctrl),
+    ctrl.add_child.bind(ctrl));
 
-router.post('/barcodes/add/', controller.find_id_father_from_ean, controller.create_barcode, controller.add_child);
+router.post('/barcodes/add/',
+    ctrl.find_id_father_from_ean.bind(ctrl),
+    ctrl.create_barcode.bind(ctrl),
+    ctrl.add_child.bind(ctrl));
 
 /*
  * PUT
  */
-router.put('/:id', controller.update);
+router.put('/:id', ctrl.update.bind(ctrl));
 
 /*
  * DELETE
  */
-router.delete('/:id', controller.remove);
+router.delete('/:id', ctrl.remove.bind(ctrl));
 
 module.exports = router;

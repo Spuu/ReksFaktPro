@@ -13,7 +13,7 @@ router.get('/', controller.list);
 router.get('/:id', controller.show);
 
 // TODO: cos nie tak z sub-posittion query
-//router.get('/query/:invoice_id', controller.query);
+//router.get('/query/:invoice_id', ctrl.query);
 
 /*
  * POST

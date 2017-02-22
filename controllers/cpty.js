@@ -1,6 +1,6 @@
 let Utils = require('../utils/GenericUtils');
 let dataModel = require('../models/cpty');
-let BasicController = require('./generic/BasicController.js');
+let BasicController = require('./generic/BasicController');
 let ListParamManager = require('./generic/ListParamManager');
 let EmptyQueryBuilder = require('./generic/EmptyQueryBuilder');
 
