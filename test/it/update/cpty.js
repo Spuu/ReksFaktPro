@@ -10,7 +10,7 @@ module.exports = function (done) {
     };
 
     request(config.api_url)
-        .put('/cpty/' + TestManager.getId('cpty_arti'))
+        .put('/counterparty/' + TestManager.getId('cpty_arti'))
         .send(obj)
         .expect(200)
         .end(function (err, res) {

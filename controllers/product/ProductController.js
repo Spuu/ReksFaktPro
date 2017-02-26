@@ -1,10 +1,10 @@
-let Utils = require('../utils/GenericUtils');
-let RelationHelper = require('./product/RelationHelper');
-let dataModel = require('../models/product');
+let Utils = require('../../utils/GenericUtils');
+let RelationHelper = require('./RelationHelper');
+let dataModel = require('../../models/product');
 
-let BasicController = require('./generic/BasicController.js');
-let ProductListParamManager = require('./product/ProductListParamManager');
-let ProductQueryBuilder = require('./product/ProductQueryBuilder');
+let BasicController = require('./../generic/BasicController.js');
+let ProductListParamManager = require('./ProductListParamManager');
+let ProductQueryBuilder = require('./ProductQueryBuilder');
 
 class ProductController extends BasicController {
     constructor() {

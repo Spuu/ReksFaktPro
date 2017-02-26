@@ -39,7 +39,7 @@ module.exports = function (done) {
      */
     function createRequest(data, cb) {
         return request(config.api_url)
-            .post('/cpty')
+            .post('/counterparty')
             .send(data)
             .expect(200)
             .end(cb);

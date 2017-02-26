@@ -1,6 +1,10 @@
 var Utils = require('../../utils/GenericUtils');
 
+/**
+ * General routes for all models
+ */
 class BasicController {
+
     constructor(dataModel, paramManager, queryBuilder) {
         this.dataModel = dataModel;
         this.paramManager = paramManager;

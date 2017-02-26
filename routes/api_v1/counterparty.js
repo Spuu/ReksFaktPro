@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var ctrl = require('../../controllers/cpty');
+var ctrl = require('../../controllers/counterparty/CounterpartyController');
 
 /*
  * GET

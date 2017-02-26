@@ -1,30 +1,30 @@
 var express = require('express');
 var router = express.Router();
-var controller = require('../../controllers/category');
+var ctrl = require('../../controllers/category/CategoryController');
 
 /*
  * GET
  */
-router.get('/', controller.list);
+router.get('/', ctrl.list.bind(ctrl));
 
 /*
  * GET
  */
-router.get('/:id', controller.show);
+router.get('/:id', ctrl.show.bind(ctrl));
 
 /*
  * POST
  */
-router.post('/', controller.create);
+router.post('/', ctrl.create.bind(ctrl));
 
 /*
  * PUT
  */
-router.put('/:id', controller.update);
+router.put('/:id', ctrl.update.bind(ctrl));
 
 /*
  * DELETE
  */
-router.delete('/:id', controller.remove);
+router.delete('/:id', ctrl.remove.bind(ctrl));
 
 module.exports = router;
