@@ -1,6 +1,6 @@
 "use strict";
 
-var Product = require('../../models/product');
+var Product = require('../../models/Product');
 var Rx = require('rx');
 
 class RelationHelper {

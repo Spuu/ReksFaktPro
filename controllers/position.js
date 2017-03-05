@@ -1,5 +1,5 @@
 var Utils = require('../utils/GenericUtils');
-var dataModel = require('../models/position');
+var dataModel = require('../models/Position');
 var SubPosition = require('../models/sub-position');
 var _ = require('lodash');
 

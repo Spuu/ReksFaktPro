@@ -1,4 +1,4 @@
-let dataModel = require('../../models/counterparty');
+let dataModel = require('../../models/Counterparty');
 let BasicController = require('../generic/BasicController');
 let ListParamManager = require('../generic/ListParamManager');
 let EmptyQueryBuilder = require('../generic/EmptyQueryBuilder');

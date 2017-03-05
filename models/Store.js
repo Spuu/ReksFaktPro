@@ -3,7 +3,7 @@ let Schema = mongoose.Schema;
 
 let schema = new Schema({
     name: {type: String, required: true, unique: true, dropDups: true},
-    type: String
+    long_name: String
 });
 
-module.exports = mongoose.model('Category', schema);
+module.exports = mongoose.model('Store', schema);

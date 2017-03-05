@@ -6,7 +6,7 @@ let schema = new Schema({
     document_date:      {type: Date, default: Date.now},
     last_modif_date:    {type: Date, default: Date.now},
     name:               {type: String, required: true},
-    positions:          [{type: Schema.ObjectId, ref: 'Position'}]
+    categories:         [{type: Schema.ObjectId, ref: 'Category'}]
 });
 
 module.exports = mongoose.model('Document', schema);

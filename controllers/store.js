@@ -1,5 +1,5 @@
 var Utils = require('../utils/GenericUtils');
-var dataModel = require('../models/store');
+var dataModel = require('../models/Store');
 
 module.exports = {
 

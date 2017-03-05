@@ -19,7 +19,7 @@ define({ "api": [
         ]
       }
     },
-    "filename": "controllers/product.js",
+    "filename": "controllers/Product.js",
     "groupTitle": "Product"
   }
 ] });

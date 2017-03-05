@@ -1,6 +1,6 @@
 let Utils = require('../../utils/GenericUtils');
 let RelationHelper = require('./RelationHelper');
-let dataModel = require('../../models/product');
+let dataModel = require('../../models/Product');
 
 let BasicController = require('./../generic/BasicController.js');
 let ProductListParamManager = require('./ProductListParamManager');

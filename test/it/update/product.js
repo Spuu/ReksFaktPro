@@ -3,7 +3,7 @@ var request = require('supertest');
 var config = require('../../../config');
 
 var TestManager = require('../../modules/TestManager');
-var Product = require('../../../models/product');
+var Product = require('../../../models/Product');
 
 module.exports = function (done) {
     var obj = {
