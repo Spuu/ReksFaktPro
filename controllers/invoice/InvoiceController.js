@@ -1,4 +1,4 @@
-let dataModel = require('../../models/invoice');
+let dataModel = require('../../models/Invoice');
 let BasicController = require('../generic/BasicController');
 let ListParamManager = require('../generic/ListParamManager');
 let EmptyQueryBuilder = require('../generic/EmptyQueryBuilder');
