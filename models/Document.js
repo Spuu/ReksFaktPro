@@ -9,4 +9,9 @@ let schema = new Schema({
     categories:         [{type: Schema.ObjectId, ref: 'Category'}]
 });
 
+schema.pre('save', (next) => {
+    this.last_modif_date = Date.now();
+    next();
+});
+
 module.exports = mongoose.model('Document', schema);

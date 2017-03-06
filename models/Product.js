@@ -4,45 +4,55 @@ let _ = require('lodash');
 let Schema = mongoose.Schema;
 
 let schema = new Schema({
+    enabled:                {type: Boolean, default: true},
     ean:                    {type: String, required: true},
     name:                   {type: String, required: true},
-    cash_register_name:     String, // set in 'pre' function
-    cash_register_rate:     {type: Number, min: 0, default: 1},
     is_barcode:             {type: Boolean, default: false},
     pih_amount:             {type: Number, min: 1, default: 1},
     pih_unit:               {type: String, default: 'g'},
     sell_unit:              {type: String, default: 'szt'},
     vat:                    {type: Number, min: 0, default: 23},
-    status:                 {type: String, enum: ['New', 'Updated', 'Valid'], default: 'New'},
     grouper:                {type: Schema.ObjectId, ref: 'Product'},
     groupee:                [{type: Schema.ObjectId, ref: 'Product'}],
     father:                 {type: Schema.ObjectId, ref: 'Product'},
-    children:               [{type: Schema.ObjectId, ref: 'Product'}] // is set automatically in middleware
+    children:               [{type: Schema.ObjectId, ref: 'Product'}],
+
+    status:                 {type: String, enum: ['New', 'Updated', 'Valid'], default: 'New'},
+    cash_register: {
+        name: String,
+        price: Number,
+        vat: Number
+    }
 });
 
 schema.pre('save', (next) => {
-    // set default if doesn't exist
-    if (_.isEmpty(this.cash_register_name)) {
-        this.cash_register_name = this.name;
-    }
-
-    // check if ralation tree consistency
+    // check ralation tree consistency
     if (!_.isEmpty(this.children) && !_.isEmpty(this.father)) {
         next(new Error("Product cannot have both father and children."))
-    } else {
-        // update
-        this.model('Product').find({'father': this._id}, '_id', (error, results) => {
-            if (error)
-                next(error);
-
-            this.children = results;
-            next();
-        });
     }
+
+    // set default cash register name if doesn't exist
+    if (_.isEmpty(this.cash_register.name)) {
+        this.cash_register.name = this.name;
+    }
+
+    // cash register update check
+    if (!_.eq(this.cash_register.price, this.sell_brutto_price) || !_.eq(this.cash_register.vat, this.vat)) {
+        this.cash_register.price = this.sell_brutto_price;
+        this.cash_register.vat = this.vat;
+
+        if(_.isEmpty(this._id)) {
+            this.status = 'New';
+        } else {
+            this.status = 'Updated';
+        }
+    }
+
+    next();
 });
 
 schema.pre('remove', (next) => {
-    let baseCount = this.model('Position').count({'base.product': this._id});
+    let baseCount = this.model('Position').count({'product': this._id});
     let sellCount = this.model('Position').count({'sell.product': this._id});
 
     let exec = (element, callback) => {
@@ -59,6 +69,9 @@ schema.pre('remove', (next) => {
     })
 });
 
+schema.methods.isEnabled = function () {
+    return enabled;
+};
 
 schema.methods.isValid = function () {
     return status === 'Valid';
