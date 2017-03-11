@@ -1,5 +1,5 @@
 let mongoose = require('mongoose');
-let mongooseHistory = require('mongoose-history');
+// let mongooseHistory = require('mongoose-history')
 let _ = require('lodash');
 let Schema = mongoose.Schema;
 
@@ -87,7 +87,7 @@ schema.statics.STATUS = function () {
     }
 };
 
-let options = {diffOnly: true};
-schema.plugin(mongooseHistory, options);
+// let options = {diffOnly: true};
+// schema.plugin(mongooseHistory, options);
 
 module.exports = mongoose.model('Product', schema);
