@@ -66,7 +66,9 @@ schema.pre('remove', (next) => {
             error = new Error("There are existing position of that product. Cannot remove.");
 
         next(error);
-    })
+    });
+
+    // TODO: manage grouper/groupee, father/children
 });
 
 schema.methods.isEnabled = function () {
