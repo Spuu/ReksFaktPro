@@ -1,7 +1,7 @@
 var request = require('supertest');
 var config = require('../../../config');
 
-var TestManager = require('../../modules/TestManager');
+var TestManager = require('.././TestManager');
 var Product = require('../../../models/Product');
 var Rx = require('rx');
 

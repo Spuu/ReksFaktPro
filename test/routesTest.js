@@ -1,10 +1,7 @@
-var should = require('should');
-var assert = require('assert');
-var request = require('supertest');
-var mongoose = require('mongoose');
-var config = require('../config');
+let mongoose = require('mongoose');
+let config = require('../config');
 
-var TestManager = require('./modules/TestManager');
+let category = require('./it/create/CategoryCreation');
 
 describe('Routes (CRUD)', function () {
     var url = 'http://localhost:3000/api';
@@ -21,7 +18,11 @@ describe('Routes (CRUD)', function () {
 
     });
 
-    describe('Create objects', function () {
+    describe('Refactoring test', () => {
+        it('category', category.execute.bind(category))
+    });
+
+    /*describe('Create objects', function () {
             it('POST /api/counterparty', require('./it/create/cpty')),
             it('POST /api/store', require('./it/create/store')),
             it('POST /api/product', require('./it/create/product')),
@@ -79,5 +80,5 @@ describe('Routes (CRUD)', function () {
 
     describe('Deleting objects', function () {
 
-    });
+    });*/
 });

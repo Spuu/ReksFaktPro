@@ -396,7 +396,7 @@ require([
         // call scrollspy refresh method
         $(window).scrollspy('refresh');
 
-        // init modules
+        // init utils
         sampleRequest.initDynamic();
     }
     initDynamic();

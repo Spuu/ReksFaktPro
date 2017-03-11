@@ -1,7 +1,7 @@
 var request = require('supertest');
 var config = require('../../../config');
 
-var TestManager = require('../../modules/TestManager');
+var TestManager = require('.././TestManager');
 var Rx = require('rx');
 
 module.exports = function (done) {
