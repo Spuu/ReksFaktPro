@@ -1,28 +1,33 @@
 var express = require('express');
 var router = express.Router();
-var controller = require('../../controllers/position/PositionController');
+var ctrl = require('../../controllers/position/PositionController');
 
 /*
  * GET
  */
-router.get('/', controller.list, controller.populate);
-router.get('/:id', controller.show, controller.populate);
-router.get('/query/:product_id/:store_id?', controller.search, controller.populate);
-router.get('/invoice/:invoice_id', controller.invoice, controller.populate);
+router.get('/', ctrl.list.bind(ctrl));
+
+/*
+ * GET
+ */
+router.get('/:id', ctrl.show.bind(ctrl));
 
 /*
  * POST
  */
-router.post('/', controller.create, controller.populate);
+router.post('/', ctrl.create.bind(ctrl));
 
 /*
  * PUT
  */
-router.put('/:id', controller.update, controller.populate);
+router.put('/:id', ctrl.update.bind(ctrl));
 
 /*
  * DELETE
  */
-router.delete('/:id', controller.remove, controller.populate);
+router.delete('/:id', ctrl.remove.bind(ctrl));
+
+router.get('/query/:product_id/:store_id?', ctrl.search.bind(ctrl));
+router.get('/invoice/:invoice_id', ctrl.invoice.bind(ctrl));
 
 module.exports = router;
