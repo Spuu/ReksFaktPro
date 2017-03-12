@@ -5,6 +5,7 @@ class Identifiers {
         this.category = new Repository();
         this.counterparty = new Repository();
         this.store = new Repository();
+        this.invoice = new Repository();
     }
 }
 

@@ -13,7 +13,7 @@ class CounterpartyCreation extends SingleTest {
         let data = Description.datasets;
 
         // saved for update validation
-        Datasets.set(Description.keyArti, data[0]);
+        Datasets.counterparty.set(Description.keyArti, data[0]);
         return data;
     }
 

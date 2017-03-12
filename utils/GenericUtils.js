@@ -13,19 +13,12 @@ var Utils = function(){
         return error(res, 404, 'No such data');
     };
 
-    var setObject = (target, source) =>
-        Object.keys(source)
-            .forEach(
-                (key) => target[key] = source[key]
-            );
-
-    var objectValues = obj => Object.keys(obj).map(key => obj[key]);
+    var objectValues = obj => Object.values(obj).map(key => obj[key]);
 
     return {
         error: error,
         err500: err500,
         err404: err404,
-        setObject: setObject,
         objectValues: objectValues
     }
 };

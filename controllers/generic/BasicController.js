@@ -56,7 +56,7 @@ class BasicController {
 
     create(req, res) {
         let model = new this.dataModel();
-        Utils.setObject(model, req.body);
+        Object.assign(model, req.body);
 
         model.save((err, data) => {
             if (err) return Utils.error(res, 500, err.message);
@@ -70,7 +70,7 @@ class BasicController {
             if (err) return Utils.error(res, 500, err.message);
             if (!data) return Utils.err400(res);
 
-            Utils.setObject(data, req.body);
+            Object.assign(data, req.body);
 
             data.save((err, data) => {
                 if (err) return Utils.err500(res);

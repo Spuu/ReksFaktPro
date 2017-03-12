@@ -4,6 +4,7 @@ let config = require('../config');
 let category = require('./it/create/category');
 let counterparty = require('./it/create/counterparty');
 let store = require('./it/create/store');
+let invoice = require('./it/create/invoice');
 
 describe('Routes (CRUD)', function () {
     before(function (done) {
@@ -21,7 +22,8 @@ describe('Routes (CRUD)', function () {
     describe('Create objects', function () {
         it('POST /api/category', category.execute.bind(category)),
         it('POST /api/counterparty', counterparty.execute.bind(counterparty)),
-        it('POST /api/store', store.execute.bind(store));
+        it('POST /api/store', store.execute.bind(store)),
+        it('POST /api/invoice', invoice.execute.bind(invoice));
     });
 
     /*describe('Updating objects', function () {
