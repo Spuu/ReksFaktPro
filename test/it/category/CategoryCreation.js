@@ -1,6 +1,7 @@
 let request = require('supertest');
 let SingleTest = require('../../utils/SingleTest');
 let Identifiers = require('../../utils/Identifiers');
+let Description = require('./CategoryDescription');
 
 class CategoryCreation extends SingleTest {
     get defaults() {
@@ -8,19 +9,7 @@ class CategoryCreation extends SingleTest {
     }
 
     get datasets() {
-        return [
-            {
-                name: 'Product 23',
-                type: 'Substitution'
-            },
-            {
-                name: 'Karma',
-                type: 'Product'
-            },
-            {
-                name: 'Szafa 12',
-                type: 'Location'
-            }];
+        return Description.datasets;
     }
 
     apiCall(data, cb) {
@@ -33,6 +22,8 @@ class CategoryCreation extends SingleTest {
 
     finalize(res) {
         super.finalize(res);
+
+        Identifiers.category.set(Description.CATEGORY + res.name, res._id);
     }
 }
 

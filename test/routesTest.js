@@ -1,11 +1,10 @@
 let mongoose = require('mongoose');
 let config = require('../config');
 
-let category = require('./it/create/CategoryCreation');
+let category = require('./it/category');
+let counterparty = require('./it/counterparty');
 
 describe('Routes (CRUD)', function () {
-    var url = 'http://localhost:3000/api';
-
     before(function (done) {
         mongoose.connect(config.mongo_url, function () {
             mongoose.connection.db.dropDatabase(function () {
@@ -18,19 +17,12 @@ describe('Routes (CRUD)', function () {
 
     });
 
-    describe('Refactoring test', () => {
-        it('category', category.execute.bind(category))
+    describe('Create objects', function () {
+        it('POST /api/category', category.create.execute.bind(category.create)),
+        it('POST /api/counterparty', counterparty.create.execute.bind(counterparty.create));
     });
 
-    /*describe('Create objects', function () {
-            it('POST /api/counterparty', require('./it/create/cpty')),
-            it('POST /api/store', require('./it/create/store')),
-            it('POST /api/product', require('./it/create/product')),
-            it('POST /api/invoice', require('./it/create/invoice')),
-            it('POST /api/position', require('./it/create/position'));
-    });
-
-    describe('Updating objects', function () {
+    /*describe('Updating objects', function () {
             it('PUT /api/counterparty', require('./it/update/cpty')),
             it('PUT /api/invoice', require('./it/update/invoice')),
             it('PUT /api/position', require('./it/update/position')),

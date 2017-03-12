@@ -5,7 +5,7 @@ router.get('/', function(req, res) {
     res.json({ message: 'RFP v2.0.1' });
 });
 
-router.use('/cpty', require('./counterparty'));
+router.use('/counterparty', require('./counterparty'));
 router.use('/store', require('./store'));
 router.use('/position', require('./position'));
 router.use('/invoice', require('./invoice'));
