@@ -1,16 +1,14 @@
-const CATEGORY = 'category_';
-
 class CategoryDescription {
     static get keyProduct() {
-        return CATEGORY + this.datasets[0].name;
+        return this.datasets[0].name;
     }
 
     static get keyKarma() {
-        return CATEGORY + this.datasets[1].name;
+        return this.datasets[1].name;
     }
 
     static get keySzafa() {
-        return CATEGORY + this.datasets[2].name;
+        return this.datasets[2].name;
     }
 
     static get datasets() {
@@ -30,5 +28,4 @@ class CategoryDescription {
     }
 }
 
-module.exports.CATEGORY = CATEGORY;
 module.exports = CategoryDescription;

@@ -1,6 +1,6 @@
 let request = require('supertest');
-let SingleTest = require('../../utils/SingleTest');
-let Identifiers = require('../../utils/Identifiers');
+let SingleTest = require('../../../utils/SingleTest');
+let Identifiers = require('../../../utils/Identifiers');
 let Description = require('./CategoryDescription');
 
 class CategoryCreation extends SingleTest {
@@ -23,7 +23,7 @@ class CategoryCreation extends SingleTest {
     finalize(res) {
         super.finalize(res);
 
-        Identifiers.category.set(Description.CATEGORY + res.name, res._id);
+        Identifiers.category.set(res.name, res._id);
     }
 }
 

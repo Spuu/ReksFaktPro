@@ -2,7 +2,7 @@ let request = require('supertest');
 let SingleTest = require('../../utils/SingleTest');
 let Identifiers = require('../../utils/Identifiers');
 let Datasets = require('../../utils/Datasets');
-let Counterparty = require('./../counterparty/CounterpartyCreation');
+let Counterparty = require('./counterparty/CounterpartyCreation');
 
 const INVOICE = 'invoice_';
 

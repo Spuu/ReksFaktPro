@@ -4,6 +4,7 @@ class Identifiers {
     constructor() {
         this.category = new Repository();
         this.counterparty = new Repository();
+        this.store = new Repository();
     }
 }
 
