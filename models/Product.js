@@ -3,6 +3,12 @@ let mongoose = require('mongoose');
 let _ = require('lodash');
 let Schema = mongoose.Schema;
 
+const STATUS = {
+    NEW: 'New',
+    UPDATED: 'Updated',
+    VALID: 'Valid'
+};
+
 let schema = new Schema({
     enabled:                {type: Boolean, default: true},
     ean:                    {type: String, required: true},
@@ -17,7 +23,7 @@ let schema = new Schema({
     father:                 {type: Schema.ObjectId, ref: 'Product'},
     children:               [{type: Schema.ObjectId, ref: 'Product'}],
 
-    status:                 {type: String, enum: ['New', 'Updated', 'Valid'], default: 'New'},
+    status:                 {type: String, enum: _.values(STATUS), default: STATUS.NEW},
     cash_register: {
         name: String,
         price: Number,
@@ -32,8 +38,13 @@ schema.pre('save', (next) => {
     }
 
     // set default cash register name if doesn't exist
-    if (_.isEmpty(this.cash_register.name)) {
-        this.cash_register.name = this.name;
+    if (_.isEmpty(this.cash_register)) {
+        this.cash_register = {
+            name: this.name,
+            price: this.sell_brutto_price,
+            vat: this.vat};
+
+        this.status = STATUS.NEW;
     }
 
     // cash register update check
@@ -42,9 +53,9 @@ schema.pre('save', (next) => {
         this.cash_register.vat = this.vat;
 
         if(_.isEmpty(this._id)) {
-            this.status = 'New';
+            this.status = STATUS.NEW;
         } else {
-            this.status = 'Updated';
+            this.status = STATUS.UPDATED;
         }
     }
 
@@ -80,11 +91,7 @@ schema.methods.isValid = function () {
 };
 
 schema.statics.STATUS = function () {
-    return {
-        NEW: 'New',
-        UPDATED: 'Updated',
-        VALID: 'Valid'
-    }
+    return STATUS;
 };
 
 // let options = {diffOnly: true};

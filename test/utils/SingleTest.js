@@ -21,10 +21,10 @@ class SingleTest {
     /**
      * Default values set in a database.
      * Check if they're properly assigned.
-     * @returns {Array} Default values for Mongo document
+     * @returns {Object} Default values for Mongo document
      */
     get defaults() {
-        return [];
+        return {};
     }
 
     /**
@@ -94,7 +94,10 @@ class SingleTest {
                 let res = obj.res;
                 let data = obj.data;
 
-                SingleTest.compare(res.body, Object.assign(data, this.defaults));
+                if (!_.isMatch(res.body, Object.assign(this.defaults, data))) {
+                    throw new Error(`Request and response data are not equal: \n${JSON.stringify(Object.assign(this.defaults, data))}\n${JSON.stringify(res.body)}`);
+                }
+
                 this.finalize(res.body);
             },
             (err) => {
@@ -104,16 +107,6 @@ class SingleTest {
                 done();
             }
         );
-    }
-
-
-    static compare(object, baseline) {
-        _.each(baseline, (value, key) => {
-            if (object[key] !== value)
-                return false;
-        });
-
-        return true;
     }
 }
 
